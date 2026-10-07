@@ -1,0 +1,26 @@
+name: Build Cheat
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r26b
+      - name: Prepare
+        run: |
+          mkdir -p jni
+          cp cheat.cpp jni/
+          cp Android.mk jni/
+          cp Application.mk jni/
+      - name: Build
+        run: |
+          cd jni
+          ndk-build
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: libcheat
+          path: jni/libs/arm64-v8a/libcheat.so
