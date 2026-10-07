@@ -17,14 +17,16 @@ jobs:
           cp cheat.cpp jni/
           cp Android.mk jni/
           cp Application.mk jni/
+          echo "=== FILES IN jni ==="
           ls -la jni/
       
       - name: Build
         run: |
           cd jni
-          ndk-build V=1
-          echo "=== LIBS ==="
-          find . -name "*.so" -type f
+          ls -la
+          $ANDROID_NDK_HOME/ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk NDK_APPLICATION_MK=Application.mk
+          echo "=== FIND .so ==="
+          find . -name "*.so"
       
       - name: Upload
         uses: actions/upload-artifact@v4
