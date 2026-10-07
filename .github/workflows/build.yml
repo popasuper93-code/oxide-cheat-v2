@@ -22,12 +22,13 @@ jobs:
       - name: Build
         run: |
           cd jni
-          ndk-build
-          ls -la libs/arm64-v8a/ 2>/dev/null || echo "NO LIBS"
+          ndk-build V=1
+          echo "=== LIBS ==="
+          find . -name "*.so" -type f
       
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: libcheat
           path: jni/libs/arm64-v8a/libcheat.so
-          if-no-files-found: warn
+          if-no-files-found: error
